@@ -1,12 +1,295 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Merlyn Archive</title>
-</head>
-<body>
-    <h1>欢迎来到 Merlyn Archive</h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <p>这里存放我的小说、漫画与世界观。</p>
+<title>Merlyn Archive</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f5f3ee;
+    color: #222;
+    font-family: "Times New Roman", "Noto Serif SC", serif;
+}
+
+header {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.logo {
+    font-size: 64px;
+    letter-spacing: 6px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #666;
+    letter-spacing: 3px;
+}
+
+.intro {
+    max-width: 650px;
+    margin-top: 40px;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+nav {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #222;
+    margin-left: 25px;
+    font-size: 15px;
+}
+
+section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 40px;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 15px;
+}
+
+.works {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    gap: 30px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 30px;
+    background: #faf9f6;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 28px;
+}
+
+.card .en {
+    color: #555;
+    font-style: italic;
+}
+
+.card p {
+    line-height: 1.7;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 20px;
+    border: 1px solid #333;
+    text-decoration: none;
+    color: #222;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    color: #777;
+    font-size: 14px;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<nav>
+<a href="#">首页 Home</a>
+<a href="#">作品 Works</a>
+<a href="#">插画 Illustrations</a>
+<a href="#">日志 Journal</a>
+<a href="#">关于 About</a>
+</nav>
+
+
+<header>
+
+<div class="logo">
+Merlyn Archive
+</div>
+
+<div class="subtitle">
+梅林档案馆
+</div>
+
+
+<div class="intro">
+
+一个关于小说、漫画与世界构筑的个人创作档案。
+
+<br>
+
+An archive of original stories, comics and worldbuilding projects.
+
+</div>
+
+</header>
+
+
+
+<section>
+
+<div class="section-title">
+Featured Works
+<br>
+主要作品
+</div>
+
+
+<div class="works">
+
+
+<div class="card">
+
+<h2>
+The Nightwatch of Wodeland
+</h2>
+
+<div class="en">
+沃德兰的守夜人
+</div>
+
+
+<p>
+一部关于骑士、学院、魔法与时代变迁的长篇幻想作品。
+包含正篇漫画、前传以及小说版本。
+</p>
+
+<p>
+A fantasy saga exploring knights, academies, magic and the changing world.
+</p>
+
+
+<a class="button" href="#">
+Explore
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>
+Generation NULL
+</h2>
+
+<div class="en">
+空值论
+</div>
+
+
+<p>
+一部围绕数学、存在与观察者展开的哲学科幻漫画。
+</p>
+
+
+<p>
+A philosophical science-fiction comic about mathematics, existence and the observer.
+</p>
+
+
+<a class="button" href="#">
+Explore
+</a>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<section>
+
+<div class="section-title">
+Archive
+<br>
+档案
+</div>
+
+
+<div class="works">
+
+<div class="card">
+<h2>
+Illustrations
+</h2>
+<p>
+角色设计、概念绘画与视觉实验。
+</p>
+</div>
+
+
+<div class="card">
+<h2>
+Journal
+</h2>
+<p>
+创作过程、设定记录与开发日志。
+</p>
+</div>
+
+
+<div class="card">
+<h2>
+Short Works
+</h2>
+<p>
+短篇小说、漫画短篇以及实验性作品。
+</p>
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<footer>
+
+© Merlyn Archive
+
+</footer>
+
+
 </body>
 </html>
