@@ -109,13 +109,11 @@ main.novel-container {
     color: var(--text-primary);
 }
 
-.novel-content p {
+.novel-content {
     font-size: 18px;
     line-height: 1.9;
     letter-spacing: 0.5px;
-    margin-bottom: 1.6em;
-    text-indent: 2em;     /* 段落首行缩进 */
-    text-align: justify;  /* 文本两端对齐 */
+    white-space: pre-wrap; /* 核心：保留粘贴文本的所有换行和空行 */
 }
 
 /* 底部翻页导航 */
@@ -170,8 +168,8 @@ footer {
     <h1 class="chapter-title">第一章：序幕与迷雾</h1>
     
     <article class="novel-content">
-      <!-- 在这里放入你的小说正文，每一个段落用 <p> 和 </p> 包起来 -->
-      <p>夜幕降临的时候，城堡高塔上的篝火已经被猎猎寒风吹得忽明忽暗。古老的石砖上残留着几百年来雨水侵蚀的痕迹，仿佛在默默记录着这片大陆上曾经发生过的每一次兴衰变迁。</p>
+      <!-- 在这里放入你的小说正文 -->
+      夜幕降临的时候，城堡高塔上的篝火已经被猎猎寒风吹得忽明忽暗。古老的石砖上残留着几百年来雨水侵蚀的痕迹，仿佛在默默记录着这片大陆上曾经发生过的每一次兴衰变迁。
 
     </article>
   </main>
