@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 网页标题：会显示在浏览器标签页 -->
+<title>第六章 | 沃德兰的守夜人 - 梅林档案馆</title>
+
+<!-- 引入典雅衬线字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-main: #f5f3ee;         /* 羊皮纸暖白背景 */
+    --text-primary: #2c2c2c;   /* 护眼深灰色文本 */
+    --accent-color: #8c6d46;   /* 典雅棕 */
+    --border-color: #d1cdb8;   /* 边框分割线 */
+    --container-width: 700px;  /* 最佳文字阅读宽度 */
+}
+
+/* 沉浸深色模式 */
+[data-theme="dark"] {
+    --bg-main: #1a1a1a;
+    --text-primary: #d1d1d1;
+    --accent-color: #b58d59;
+    --border-color: #333333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: "Noto Serif SC", "Times New Roman", serif;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* 顶部控制与导航栏 */
+.reader-tools {
+    width: 100%;
+    max-width: var(--container-width);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reader-tools a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.reader-tools a:hover {
+    color: var(--accent-color);
+}
+
+.theme-toggle button {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.theme-toggle button:hover {
+    border-color: var(--accent-color);
+}
+
+/* 小说正文排版核心 */
+main.novel-container {
+    width: 100%;
+    max-width: var(--container-width);
+    flex: 1;
+}
+
+.book-meta {
+    font-size: 13px;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.chapter-title {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--text-primary);
+}
+
+.novel-content {
+    font-size: 18px;
+    line-height: 1.9;
+    letter-spacing: 0.5px;
+    white-space: pre-wrap; /* 核心：保留粘贴文本的所有换行和空行 */
+    text-indent: 0;        /* 确保首行不缩进 */
+    text-align: left;      /* 建议改为左对齐（如果不缩进，左对齐视觉效果更好） */
+}
+
+/* 底部翻页导航 */
+.chapter-nav {
+    width: 100%;
+    max-width: var(--container-width);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding: 25px 0 40px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chapter-nav a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.chapter-nav a:hover {
+    text-decoration: underline;
+}
+
+.chapter-nav span.disabled {
+    color: #999;
+    font-size: 15px;
+}
+
+footer {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+}
+</style>
+</head>
+
+<body>
+
+  <!-- 1. 顶部返回与主题控制 -->
+  <header class="reader-tools">
+    <a href="/wodeland.html">← 返回目录</a>
+    <div class="theme-toggle">
+      <button onclick="toggleTheme()">切换深/浅色模式</button>
+    </div>
+  </header>
+
+  <!-- 2. 小说正文区域 -->
+  <main class="novel-container">
+    <div class="book-meta">沃德兰的守夜人 · 前传 01</div>
+    <h1 class="chapter-title">第六章：夏至节</h1>
+    
+    <article class="novel-content">
+      <!-- 小说正文 -->
+
+        
+    </article>
+      <!-- 💡 新增：章节注释/档案馆解密/作者后记 -->
+    <section class="chapter-notes">
+      <div class="notes-title">
+        <span>注释</span>
+      </div>
+      <div class="notes-content">
+        <p><strong>[1] 注释：</strong> 测试用</p>
+      </div>
+    </section>
+  </main>
+
+<!-- 正文内的标号联动：使用<sup>[1]</sup> -->
+    
+  <!-- 3. 底部跳转上一章/下一章 -->
+  <nav class="chapter-nav">
+    <a href="ch01.html">← 上一章：第五章</a>
+    <a href="/wodeland.html">目录</a>
+    <a href="ch03.html">下一章：第七章  →</a>
+  </nav>
+
+  <footer>
+    © Merlyn Archive
+  </footer>
+
+  <script>
+    // 深色/浅色模式切换脚本
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+  </script>
+
+</body>
+</html>
