@@ -22,8 +22,14 @@
     --border-hover: #1c1c1c;
     --tag-novel: #8c6d46;
     --tag-comic: #3a5f6f;
+    --tag-setting: #5a4b6e; /* 典雅暗紫/灰色，契合设定集风格 */
 }
 
+/* 添加全屏平滑滚动支持 */
+html {
+    scroll-behavior: smooth;
+}
+    
 * {
     box-sizing: border-box;
     margin: 0;
@@ -173,6 +179,7 @@ nav a:hover {
 /* 分类板块样式 */
 .block-container {
     margin-bottom: 50px;
+    scroll-margin-top: 20px; /* 滚动留白，防止紧贴顶部 */
 }
 
 .block-header {
@@ -199,6 +206,7 @@ nav a:hover {
 
 .badge-novel { background: var(--tag-novel); }
 .badge-comic { background: var(--tag-comic); }
+.badge-setting { background: var(--tag-setting); }
 
 .block-desc {
     font-size: 14px;
@@ -317,6 +325,15 @@ footer {
 <!-- 内容板块架构 -->
 <section class="content-sections">
 
+    <!-- 板块快速跳转标签页 -->
+    <div class="section-tabs">
+        <a href="#main-comic" class="tab-btn active">正篇漫画</a>
+        <a href="#prequel-01" class="tab-btn">前传 01</a>
+        <a href="#prequel-02" class="tab-btn">前传 02</a>
+        <a href="#prequel-03" class="tab-btn">前传 03</a>
+        <a href="#setting-archive" class="tab-btn">设定集</a>
+    </div>
+
     <!-- 1. 正篇漫画板块 -->
     <div class="block-container" id="main-comic">
         <div class="block-header">
@@ -404,6 +421,55 @@ footer {
         </div>
     </div>
 
+
+    <!-- 5. 设定集（Setting Archives）板块 -->
+    <div class="block-container" id="setting-archive">
+        <div class="block-header">
+            <div class="block-title">设定集与世界观</div>
+            <span class="type-badge badge-setting">设定 Archive</span>
+        </div>
+        <div class="block-desc">沃德兰大陆的历史、地理、角色档案与魔法法则。</div>
+
+        <div class="chapter-grid">
+            <!-- 设定卡片示例 1：已发布/可点击 -->
+            <a href="works/wodeland/setting/worldview.html" class="chapter-card">
+                <div>
+                    <div class="chapter-num">WORLDVIEW</div>
+                    <div class="chapter-title">世界观与地理大纲</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <!-- 设定卡片示例 2：已发布/可点击 -->
+            <a href="works/wodeland/setting/characters.html" class="chapter-card">
+                <div>
+                    <div class="chapter-num">CHARACTERS</div>
+                    <div class="chapter-title">主要角色档案</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <!-- 设定卡片示例 3：筹备中/不可点击 -->
+            <div class="chapter-card disabled">
+                <div>
+                    <div class="chapter-num">MAGIC SYSTEM</div>
+                    <div class="chapter-title">魔法与法则体系</div>
+                </div>
+                <span class="status-tag">Updating</span>
+            </div>
+
+            <!-- 设定卡片示例 4：筹备中/不可点击 -->
+            <div class="chapter-card disabled">
+                <div>
+                    <div class="chapter-num">TIMELINE</div>
+                    <div class="chapter-title">年表与重大历史事件</div>
+                </div>
+                <span class="status-tag">Drafting</span>
+            </div>
+        </div>
+    </div>
+
+    
 </section>
 
 <footer>
