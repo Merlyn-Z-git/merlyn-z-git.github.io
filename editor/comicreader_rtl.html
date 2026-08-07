@@ -12,10 +12,10 @@
 
 <style>
 :root {
-    --bg-main: #121212;         /* 暗色背景沉浸体验 */
+    --bg-main: #121212;          /* 暗色背景沉浸体验 */
     --panel-bg: rgba(26, 26, 26, 0.95);
     --text-primary: #e0e0e0;
-    --accent-color: #b58d59;     /* 典雅金色/棕色 */
+    --accent-color: #b58d59;      /* 典雅金色/棕色 */
     --border-color: #333333;
     --reader-max-width: 900px;   /* 漫画标准显示宽度 */
 }
@@ -87,6 +87,11 @@ body {
     color: var(--accent-color);
     text-decoration: none;
     font-size: 13px;
+    transition: opacity 0.2s ease;
+}
+
+.comic-title a:hover {
+    opacity: 0.8;
 }
 
 .controls-group {
@@ -226,8 +231,9 @@ body.dir-rtl .progress-container {
   <!-- 1. 顶部控制栏 -->
   <header class="reader-bar reader-header">
     <div class="comic-title">
-      <a href="#">← 目录</a>
-      <span>沃德兰的守夜人 - 第一话</span>
+      <!-- 指向根目录下的 index.html -->
+      <a href="../index.html">← 返回目录</a>
+      <span id="comicTitleText">加载中...</span>
     </div>
     
     <div class="controls-group">
@@ -249,11 +255,7 @@ body.dir-rtl .progress-container {
 
   <!-- 2. 漫画图片容器 -->
   <main class="comic-container mode-scroll" id="comicContainer" onclick="handleContainerClick(event)">
-    <img class="comic-page" src="https://picsum.photos/800/1200?random=1" alt="Page 1" loading="lazy">
-    <img class="comic-page" src="https://picsum.photos/800/1200?random=2" alt="Page 2" loading="lazy">
-    <img class="comic-page" src="https://picsum.photos/800/1200?random=3" alt="Page 3" loading="lazy">
-    <img class="comic-page" src="https://picsum.photos/800/1200?random=4" alt="Page 4" loading="lazy">
-    <img class="comic-page" src="https://picsum.photos/800/1200?random=5" alt="Page 5" loading="lazy">
+    <!-- 图片内容将由 JavaScript 根据 URL 参数自动生成 -->
   </main>
 
   <!-- 翻页模式两侧点击热区 -->
@@ -276,44 +278,94 @@ body.dir-rtl .progress-container {
   <div class="toast" id="toast"></div>
 
 <script>
-  // 配置项：如果你想让某个作品固定默认“右向左”，只需修改 defaultDirection
-  const CONFIG = {
-      defaultDirection: 'ltr', // 'ltr' (从左往右) 或 'rtl' (从右往左)
-      defaultMode: 'scroll'     // 'scroll' 或 'page'
+  // 1. 漫画数据库配置 (注意：在 editor/ 目录内访问 images/ 需要加 ../ 前缀)
+  const COMICS_DATABASE = {
+      // 正篇漫画
+      'main': {
+          title: '沃德兰的守夜人 正篇',
+          chapters: {
+              '1': { title: '第一话', pageCount: 20, folder: '../images/main/ch01/' },
+              '2': { title: '第二话', pageCount: 24, folder: '../images/main/ch02/' }
+          }
+      },
+      // 前传 02 漫画
+      'prequel02': {
+          title: '前传 02：歧路',
+          chapters: {
+              '1': { title: '全一话', pageCount: 32, folder: '../images/prequel02/ch01/' }
+          }
+      }
   };
+
+  // 2. 解析 URL 参数 (?comic=...&ch=...&dir=...)
+  const urlParams = new URLSearchParams(window.location.search);
+  const comicId = urlParams.get('comic') || 'main';
+  const chapterId = urlParams.get('ch') || '1';
+  const urlDir = urlParams.get('dir') || 'ltr';
 
   // 状态变量
   let currentPage = 1;
   let totalPages = 0;
-  let currentMode = CONFIG.defaultMode;
-  let currentDir = CONFIG.defaultDirection;
+  let currentMode = 'scroll';
+  let currentDir = urlDir;
   let barsVisible = true;
+  let pages = [];
 
   const container = document.getElementById('comicContainer');
-  const pages = document.querySelectorAll('.comic-page');
   const pageNumSpan = document.getElementById('currentPageNum');
   const totalNumSpan = document.getElementById('totalPagesNum');
   const progressBar = document.getElementById('progressBar');
   const modeSelect = document.getElementById('modeSelect');
   const dirSelect = document.getElementById('dirSelect');
+  const titleText = document.getElementById('comicTitleText');
 
   // 初始化
   window.addEventListener('DOMContentLoaded', () => {
-      totalPages = pages.length;
-      totalNumSpan.textContent = totalPages;
+      const comicInfo = COMICS_DATABASE[comicId];
+      const chapterInfo = comicInfo ? comicInfo.chapters[chapterId] : null;
 
-      // 允许读取上一次记忆（或者使用 CONFIG 设置）
-      const savedMode = localStorage.getItem('comic-mode') || CONFIG.defaultMode;
-      const savedDir = localStorage.getItem('comic-dir') || CONFIG.defaultDirection;
+      if (chapterInfo) {
+          // A. 动态设置标题
+          titleText.textContent = `${comicInfo.title} - ${chapterInfo.title}`;
+          // B. 动态渲染漫画图片
+          renderPages(chapterInfo.folder, chapterInfo.pageCount);
+      } else {
+          titleText.textContent = '未找到对应的漫画章节';
+          showToast('无法读取章节，请检查链接参数');
+      }
 
+      // C. 应用阅读方向和模式
+      const savedMode = localStorage.getItem('comic-mode') || 'scroll';
       modeSelect.value = savedMode;
-      dirSelect.value = savedDir;
+      dirSelect.value = urlDir;
 
-      switchDirection(savedDir, false);
+      switchDirection(urlDir, false);
       switchMode(savedMode, false);
 
       updatePageDisplay();
   });
+
+  // 根据路径与页数动态生成 <img> 标签
+  function renderPages(folderPath, count) {
+      container.innerHTML = ''; // 清空内容
+
+      for (let i = 1; i <= count; i++) {
+          // 自动补全 3 位文件名 (001.jpg, 002.jpg ... 020.jpg)
+          const fileName = String(i).padStart(3, '0') + '.jpg';
+          
+          const img = document.createElement('img');
+          img.className = 'comic-page';
+          img.src = folderPath + fileName;
+          img.alt = `第 ${i} 页`;
+          img.loading = 'lazy';
+
+          container.appendChild(img);
+      }
+
+      pages = document.querySelectorAll('.comic-page');
+      totalPages = pages.length;
+      totalNumSpan.textContent = totalPages;
+  }
 
   // 切换阅读方向 (ltr / rtl)
   function switchDirection(dir, showMsg = true) {
@@ -353,14 +405,13 @@ body.dir-rtl .progress-container {
       }
   }
 
-  // 点击左右两侧热区的响应逻辑
+  // 点击左右热区逻辑
   function handleZoneClick(zone) {
       if (currentDir === 'ltr') {
-          // 左=上一页，右=下一页
           if (zone === 'left') prevPage();
           else nextPage();
       } else {
-          // 右向左（日漫）：右=上一页，左=下一页
+          // 右向左（日漫）：右边=上一页，左边=下一页
           if (zone === 'right') prevPage();
           else nextPage();
       }
@@ -428,12 +479,12 @@ body.dir-rtl .progress-container {
   function updatePageDisplay() {
       pageNumSpan.textContent = currentPage;
       if (currentMode === 'page') {
-          const percent = (currentPage / totalPages) * 100;
+          const percent = totalPages > 0 ? (currentPage / totalPages) * 100 : 0;
           progressBar.style.width = percent + '%';
       }
   }
 
-  // 点击页面中间区域隐藏/显示工具栏
+  // 点击页面中间隐藏/显示工具栏
   function handleContainerClick(e) {
       barsVisible = !barsVisible;
       if (barsVisible) {
@@ -443,7 +494,7 @@ body.dir-rtl .progress-container {
       }
   }
 
-  // 全屏
+  // 全屏控制
   function toggleFullscreen() {
       if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(err => {
@@ -454,12 +505,11 @@ body.dir-rtl .progress-container {
       }
   }
 
-  // 快捷键配置（支持按方向自动匹配键盘左右键）
+  // 键盘快捷键监听
   document.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
 
       if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-          // 如果是从右向左，按右箭头/D键是看上/前一页（日漫逻辑）
           if (currentDir === 'rtl') prevPage();
           else nextPage();
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
@@ -474,7 +524,7 @@ body.dir-rtl .progress-container {
       }
   });
 
-  // Toast
+  // Toast 弹窗
   function showToast(msg) {
       const toast = document.getElementById('toast');
       toast.textContent = msg;
