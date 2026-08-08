@@ -1,0 +1,424 @@
+* {
+    box-sizing: border-box;
+}
+
+
+:root {
+
+    --background: #f5f3ee;
+
+    --paper: #faf9f6;
+
+    --text: #222;
+
+    --text-muted: #666;
+
+    --border: #ccc;
+
+}
+
+
+/* =====================
+   Global
+===================== */
+
+
+body {
+
+    margin: 0;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    font-family:
+        "Times New Roman",
+        "Noto Serif SC",
+        serif;
+
+}
+
+
+a {
+
+    color: var(--text);
+
+}
+
+
+
+/* =====================
+   Header
+===================== */
+
+
+header {
+
+    padding: 30px 40px;
+
+}
+
+
+.logo {
+
+    font-size: 40px;
+
+    letter-spacing: 5px;
+
+}
+
+
+
+.subtitle {
+
+    color: var(--text-muted);
+
+    letter-spacing: 3px;
+
+}
+
+
+
+/* =====================
+   Navigation
+===================== */
+
+
+nav {
+
+    position: absolute;
+
+    top: 30px;
+
+    right: 40px;
+
+}
+
+
+nav a {
+
+    text-decoration: none;
+
+    color: var(--text);
+
+    margin-left: 25px;
+
+    font-size: 15px;
+
+}
+
+
+
+nav a:hover {
+
+    opacity: 0.6;
+
+}
+
+
+
+/* =====================
+   Main Section
+===================== */
+
+
+section {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+
+}
+
+
+
+.section-title {
+
+    font-size: 32px;
+
+    font-weight: normal;
+
+    margin-bottom: 40px;
+
+    border-bottom:
+
+        1px solid #aaa;
+
+    padding-bottom: 15px;
+
+}
+
+
+
+/* =====================
+   Journal
+===================== */
+
+
+.journal-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 35px;
+
+}
+
+
+
+.journal-card {
+
+    background: var(--paper);
+
+    border:
+
+        1px solid var(--border);
+
+    padding: 30px;
+
+    transition: 0.3s;
+
+}
+
+
+
+.journal-card:hover {
+
+    transform: translateY(-5px);
+
+}
+
+
+
+.journal-date {
+
+    font-size: 14px;
+
+    color: var(--text-muted);
+
+    margin-bottom: 10px;
+
+}
+
+
+
+.journal-card h2 {
+
+    font-size: 26px;
+
+    font-weight: normal;
+
+    margin: 5px 0 15px;
+
+}
+
+
+
+.journal-card p {
+
+    line-height: 1.8;
+
+}
+
+
+
+.button {
+
+    display: inline-block;
+
+    margin-top: 20px;
+
+    padding: 8px 20px;
+
+    border:
+
+        1px solid #333;
+
+    text-decoration: none;
+
+}
+
+
+
+.button:hover {
+
+    background: #222;
+
+    color: #fff;
+
+}
+
+
+
+/* =====================
+   Works Cards
+===================== */
+
+
+.works {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(auto-fit,minmax(300px,1fr));
+
+    gap: 30px;
+
+}
+
+
+
+.card {
+
+    border:
+
+        1px solid var(--border);
+
+    padding: 30px;
+
+    background: var(--paper);
+
+    transition:0.3s;
+
+}
+
+
+
+.card:hover {
+
+    transform: translateY(-5px);
+
+}
+
+
+
+.card h2 {
+
+    margin-top:0;
+
+    font-size:28px;
+
+}
+
+
+
+.card .en {
+
+    color:#555;
+
+    font-style:italic;
+
+}
+
+
+
+.card p {
+
+    line-height:1.7;
+
+}
+
+
+
+/* =====================
+   Gallery
+===================== */
+
+
+.gallery {
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:30px;
+
+}
+
+
+.gallery img {
+
+    width:100%;
+
+    display:block;
+
+}
+
+
+
+/* =====================
+   Footer
+===================== */
+
+
+footer {
+
+    text-align:center;
+
+    padding:60px 20px 40px;
+
+    color:var(--text-muted);
+
+    font-size:14px;
+
+    border-top:
+
+        1px solid var(--border);
+
+    max-width:1000px;
+
+    margin:40px auto 0;
+
+}
+
+
+
+/* =====================
+   Mobile
+===================== */
+
+
+@media(max-width:600px){
+
+
+nav {
+
+    position:static;
+
+    text-align:center;
+
+    margin-top:20px;
+
+}
+
+
+nav a {
+
+    display:inline-block;
+
+    margin:10px;
+
+}
+
+
+section {
+
+    padding:20px;
+
+}
+
+
+.logo {
+
+    font-size:36px;
+
+}
+
+
+}
