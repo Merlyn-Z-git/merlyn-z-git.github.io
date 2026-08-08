@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 网页标题：会显示在浏览器标签页 -->
+<title>第三章 | 沃德兰的守夜人 - 梅林档案馆</title>
+
+<!-- 引入典雅衬线字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-main: #f5f3ee;         /* 羊皮纸暖白背景 */
+    --text-primary: #2c2c2c;   /* 护眼深灰色文本 */
+    --accent-color: #8c6d46;   /* 典雅棕 */
+    --border-color: #d1cdb8;   /* 边框分割线 */
+    --container-width: 700px;  /* 最佳文字阅读宽度 */
+}
+
+/* 沉浸深色模式 */
+[data-theme="dark"] {
+    --bg-main: #1a1a1a;
+    --text-primary: #d1d1d1;
+    --accent-color: #b58d59;
+    --border-color: #333333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: "Noto Serif SC", "Times New Roman", serif;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* 顶部控制与导航栏 */
+.reader-tools {
+    width: 100%;
+    max-width: var(--container-width);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reader-tools a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.reader-tools a:hover {
+    color: var(--accent-color);
+}
+
+.theme-toggle button {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.theme-toggle button:hover {
+    border-color: var(--accent-color);
+}
+
+/* 小说正文排版核心 */
+main.novel-container {
+    width: 100%;
+    max-width: var(--container-width);
+    flex: 1;
+}
+
+.book-meta {
+    font-size: 13px;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.chapter-title {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--text-primary);
+}
+
+.novel-content {
+    font-size: 18px;
+    line-height: 1.9;
+    letter-spacing: 0.5px;
+    white-space: pre-wrap; /* 核心：保留粘贴文本的所有换行和空行 */
+    text-indent: 0;        /* 确保首行不缩进 */
+    text-align: left;      /* 建议改为左对齐（如果不缩进，左对齐视觉效果更好） */
+}
+
+/* 底部翻页导航 */
+.chapter-nav {
+    width: 100%;
+    max-width: var(--container-width);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding: 25px 0 40px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chapter-nav a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.chapter-nav a:hover {
+    text-decoration: underline;
+}
+
+.chapter-nav span.disabled {
+    color: #999;
+    font-size: 15px;
+}
+
+footer {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+}
+</style>
+</head>
+
+<body>
+
+  <!-- 1. 顶部返回与主题控制 -->
+  <header class="reader-tools">
+    <a href="/wodeland.html">← 返回目录</a>
+    <div class="theme-toggle">
+      <button onclick="toggleTheme()">切换深/浅色模式</button>
+    </div>
+  </header>
+
+  <!-- 2. 小说正文区域 -->
+  <main class="novel-container">
+    <div class="book-meta">沃德兰的守夜人 · 前传 01</div>
+    <h1 class="chapter-title">第三章：商队，闹剧</h1>
+    
+    <article class="novel-content">
+      <!-- 小说正文 -->
+
+        <p>兄弟俩的意识在黑暗与昏迷中摇摆，整个世界都被浓重的阴影吞噬。</p>
+        <p>直到某个时刻，他们被粗暴地拽起，铁链锁住了他们的手腕，有人将他们拖进了一辆牲畜车里。这个空间四周塞满了人，无法分辨日夜，空气里充满了汗水和腐臭的气息。卢卡斯迷迷糊糊地睁开眼，只见一群身形瘦弱、眼神空洞的人被同样的铁链拴在一起，面无表情地被周围的人挤压着。他紧紧抓住乔纳斯的手，尽管身体的疲惫几乎让他无法动弹，但他依然没有放开。乔纳斯也逐渐清醒过来，明白他们的处境后，他一言不发地低下了头。</p>
+        <p>商队一直在行进，他们也不知自己度过了多少个日夜。不断有人死去，可队伍却越来越长。 车突然停了下来，盖在车上的布突然被掀开，阳光从车布被掀开的瞬间洒进来，刺得人几乎睁不开眼：他们在一片荒漠中，四周都是荒原，地面龟裂，风吹起黄褐色的尘土，空气燥热得令人窒息。远处隐约可见几棵扭曲的枯树，是这荒凉世界里唯一的标记。 商队的雇佣兵吆喝着，粗暴地驱赶俘虏下车。那些虚弱得无法站起的，便被毫不客气地拽下车厢，像破布一样随意丢在地上。看守们挥舞着鞭子，指挥其他俘虏搬下沉重的木桶和剩余不多的粮食，随后几个人快步走向车队的最前方，似乎在向领队汇报。“把生病的、残疾的清理掉。”几名看守开始在人群中穿梭，拽起每一个行动迟缓或面色苍白的俘虏，将他们拖到一旁。被挑出来的人无一例外虚弱地倒在地上。</p>
+        <p>“我曾经是一个学者，”站在兄弟俩身边的一个老人突然开口。商队行进途中，他的目光始终游离在周围每一张脸上，似乎想从这一张张木讷的脸上读出什么。此时老人看起来已经非常衰老，满身的污秽和散发的不详气味让他显得像一具行走的尸体。他突如其来的话引起周围人的注意，他仿佛感受不到外界的骚动，用沙哑的声音断断续续地说道。</p>
+        <p>“我出生在一个庄园，位于一个不起眼的小村庄……那时，我的家族并不富裕。我的父亲是一位学识渊博的地主，他从小教我拉丁语和古希腊语。我渴望探索真理……年少时，我离开了家，开始四处游学。我踏遍了大学城，讲堂、图书馆。我曾拜访过许多大师，了解了许多伟大的思想，我折服于他们的智慧，我们所身处的世界的秘密就在我眼前展现出来，甚至曾有灵感闪过的一瞬，让我的灵魂仿佛与造物主的意志相连接，我感受到了宇宙是如此浩瀚，我又是多么渺小，我沐浴在他的光辉里，享受着他那无边的善意与爱。那一刻我就像一个又惊又喜的孩子，那样的感受和喜悦使我泪流满面。</p>
+        <p>我最早的工作是在一位贵族家中担任私人教导和顾问。那个家族的主人，是一位年轻的伯爵，他崇尚理性与秩序，我们曾一同讨论上帝的存在与世界的和谐，关于自由意志和命运的辩论成了我们日常的消遣。那个庄园就像童话中的仙境一样，四季如春。我永远忘不了伯爵小姐那如同天使般的面庞。那时我是如何生活的啊！现在这些回忆对于我来说已经是虚幻的梦境。我曾经天真地相信，我的未来和幸福将如这座庄园般光辉灿烂。几年后，这个家族开始走向衰败。从某一天开始，我再也没有回到过那座庄园。我开始变得贫困，不再是学者。依靠着微薄的收入，我勉强维持生计，但内心的困惑与痛苦从未离开过。我曾多少次伏在桌上，看着面前成堆的报纸和传单，周围的喧哗声反而让我显得更加无助。我的灵魂连同肉身一起腐化堕落。我本以为自己能躲避一切，但命运对任何人都不会偏爱。这场战火摧毁了整个大陆，就连我这可怜的回忆也将陪葬于此。<sup>[1]</sup></sup></sup></p>
+        <p>但我没有动摇——这一切都是和谐的，这便是精髓——上帝是一切的设计者，他从所有可能的世界中选择了最好的一个作为现实。人的身体和内心所受到的折磨、根植在人心中的邪恶，就连同那些鼓吹虚无并以此作为新的信仰崇拜的新生力量，都并非无意义的存在，他们是整个世界中不可或缺的一部分。如果没有痛苦，幸福又怎能被感知？如果没有邪恶，善良又如何彰显？我曾因为自以为被造物主抛弃，如同草芥一般被命运玩弄而懊恼不已，直到经历过能将任何一个人的人性与良知彻底摧毁的巨大的苦痛后，我发现自己依然活着，依然苟延残喘，依然能感受到一切，依然会为他人而流泪！我这才幡然醒悟，我一直坚信着，我对造物主的爱从未动摇，我并没有被他丢弃！越是折磨我，我的信念便愈加坚定。这便是奥秘所在，这便是和谐，我开始重新对造物主怀着无尽的敬意，这个世界依然是完满的——”</p>
+        <p>乔纳斯想要对老人说些什么，但在旁边一个无意中听到老人的自述的雇佣兵先一步饶有兴致地开口：“大哲学家，你说命运、上帝的安排是最好的，这些说法听起来高深，像是能安慰这些软弱的人。这就令人疑惑啦，我所见生活可不是那么简单的。你说你从贵族家族中沦为平民的经历让你感到痛苦，那是因为你不懂得在现实面前低头。你把自己当成了思想家，幻想自己能凭借聪明才智摆脱困境。可你所拥有的知识不能变成面包和牛奶，不能保住被这场战争残害的生命，甚至无法保护你自己。如你所说，你如同草芥，现在是，以前也是。即使这样你也认为这个世界是美好的吗，你还要讴歌你的造物主的崇高吗？”</p>
+        <p>“被捆绑，被驱赶，被折磨——你也许会觉得，这不过是纯粹的不幸，是毫无意义的苦难。但你错了，大错特错！因为，所有的这些痛苦，都是为了成就更大的和谐！仔细想想吧，如果不是因为这些运货贩奴的车队存在，这片大陆又怎能得到繁荣？如果没有奴隶和平民的劳作，田地又如何收获？富丽堂皇的宫殿，高耸的城墙又如何建造？在学院里的哲人又如何孕育出新的思想？无论如何，这个世界都在不断朝前走，包括现在这场残酷的战争也是，即使大陆又将被一场空前的战火烧毁，我们依然生生不息，我们的遗产将会世代传承，造物者的荣光永存！”说到激动的地方，老人似乎再也抑制不住自己汹涌的感情，赞美起了造物主，他的脸上一扫之前的阴霾，焕发出光彩。卢卡斯打了个寒战，这种异常的转变让他感到恐惧。</p>
+        <p>那雇佣兵像是被这情绪感染了一样，他突然站了起来，身体前倾准备迈步，但停顿一下后又有些不自然地张望了一番，最终换上了一副嘲弄的表情坐回了原位。“就算这样又如何呢，这不过是你自己临终前的臆想罢了，你只能通过这种方式宽慰你那薄弱的意志。至少你的观点无法说服我，我永远可以骄傲地对你说出‘我不相信！’我遵从的，永远是实在的、绝对的——金钱、权势、力量！你的不幸的源泉，便是你太过于弱小，没有别的。”</p>
+        <p>“你和我都是一样的，我们都是不幸的人，软弱渺小，但我们都是无比幸福的，因为我们遵循造物主的意志。你我虽然承受痛苦，但我们都是这伟大链条的一部分。我们的牺牲与奉献，成就了更宏伟的目标。即使你不相信，你也一定在经受着巨大的苦难，我们每个人都逃不掉他的考验。可我们得欣然接受苦难。一个完全没有苦难的世界是无法想象的，因为那将是一个无法感知幸福的空虚之地！虽然我们看不到全貌，但这位——伟大的设计师——看得清清楚楚。他选了这个世界，因为这个世界是最好的！<sup>[2]</sup>”</p>
+        <p>“你说世界是上帝精心构建挑选的，但我告诉你，世界的本质根本不是那么复杂。它的运作规则就很简单，甚至你可能连想都没想过。我至少比你了解人是如何活着的，你从来没有真正理解人类这种生物的本性。我们这些人，我们这些能够审时度势的人。我们能把眼前所有能抓到的东西都握在手里，攥得死死的，决不放手。无论是金钱，还是权力，甚至他人的生死命运，都会在我们的手中更迭。</p>
+        <p>世界上永远都是我们这样的人可以得到一切，而且就是我们这样的人生生不息，恰好是我们这样的人会有数不清的子孙后代，我们最终会占领整个大陆，而你会被我们团团围住，被啃得骨头都不剩。你可能会说我们没有信仰，没有灵魂，最终会下地狱，或者来世会让我们偿还我们莫须有的罪孽。可你们是否想过，如果造物主真的存在，那么我们才是按照他所期望的方式活着的人。你们把所有的时间都浪费在了看不到的上帝身上，却从来没有正眼瞧过我们。我们才是被命运偏袒的一方，因为我们足够聪明且卑劣，就连命运我们也可以加以利用。你们总为了的那些美妙的理论吵得不可开交，可我们才是永恒。这就是这个世界的本质！”</p>
+        <p>恶狠狠地丢下这番话后，雇佣兵就头也不回地走了，老人还在原地含混不清地说着什么。卢卡斯不想再看这场闹剧，他厌恶地别过脸去，却发现乔纳斯紧盯着老人，眼里有什么在闪烁。</p>
+        <p>不久，老人被拽出了队伍。被挑出的人被集中在一块洼地，有一些人将火药点着后投入到洼地里，接着又让马拉着货车在洼地来来回回走了几圈，直到所有人都被分成大小不一的几份,被地上的裂缝吞噬殆尽。</p>
+        <p>清理完后，剩下的人们又被赶回了车上。车布随之盖下。</p>
+        <p>他们之后被运上了一条船，再后来不知经过了多少次转手，最终被带到了被称为“卡斯特拉管理区”的地方。</p>
+
+        
+    </article>
+      <!-- 💡 新增：章节注释/档案馆解密/作者后记 -->
+    <section class="chapter-notes">
+      <div class="notes-title">
+        <span>注释</span>
+      </div>
+      <div class="notes-content">
+        <p><strong>[1]</strong>此时为帝国历363年，大陆上还未爆发全面战争，老人说出这番话时已神志不清。
+        <p><strong>[2] 邦葛罗斯式的理论（Panglossian Theory）：</strong> 出自伏尔泰小说《老实人》（Candide）中的盲目乐观主义哲学家邦葛罗斯（Pangloss）。指一种“在所有可能的世界中，一切都是最好的”这种极端、机械且盲目的乐观主义态度。</p>
+      </div>
+    </section>
+  </main>
+
+<!-- 正文内的标号联动：使用<sup>[1]</sup> -->
+    
+  <!-- 3. 底部跳转上一章/下一章 -->
+  <nav class="chapter-nav">
+    <a href="ch02.html">← 上一章：第二章</a>
+    <a href="/wodeland.html">目录</a>
+    <a href="ch04.html">下一章：第四章  →</a>
+  </nav>
+
+  <footer>
+    © Merlyn Archive
+  </footer>
+
+  <script>
+    // 深色/浅色模式切换脚本
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+  </script>
+
+</body>
+</html>

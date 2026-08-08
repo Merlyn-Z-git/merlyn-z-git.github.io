@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>沃德兰的守夜人 | Merlyn Archive</title>
+
+<!-- 引入字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-main: #f5f3ee;
+    --bg-card: #faf9f6;
+    --text-primary: #1c1c1c;
+    --text-secondary: #666666;
+    --accent-color: #8c6d46;
+    --border-color: #d1cdb8;
+    --border-hover: #1c1c1c;
+    --tag-novel: #8c6d46;
+    --tag-comic: #3a5f6f;
+    --tag-setting: #5a4b6e; 
+}
+
+/* 添加全屏平滑滚动支持 */
+html {
+    scroll-behavior: smooth;
+}
+    
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    font-family: "Noto Serif SC", "Times New Roman", serif;
+    line-height: 1.7;
+}
+
+/* 顶部导航 */
+nav {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 15px;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+}
+
+.back-link {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* 作品头部 Banner */
+.work-header {
+    max-width: 1000px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.work-cover-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #eae6dc;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-color);
+    text-align: center;
+    padding: 20px;
+}
+
+.work-cover-placeholder .title-en {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.work-info h1 {
+    font-size: 36px;
+    font-family: 'Cinzel', "Noto Serif SC", serif;
+    margin-bottom: 5px;
+}
+
+.work-info .subtitle-en {
+    font-family: 'Cinzel', serif;
+    color: var(--accent-color);
+    font-size: 18px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+    padding: 2px 10px;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+}
+
+.synopsis {
+    color: #444;
+    font-size: 15px;
+    margin-bottom: 25px;
+    line-height: 1.8;
+}
+
+/* 版块导航 (Tabs) */
+.content-sections {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.section-tabs {
+    display: flex;
+    gap: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    font-family: 'Cinzel', "Noto Serif SC", serif;
+    font-size: 16px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    color: var(--bg-main);
+    background: var(--text-primary);
+}
+
+/* 分类板块样式 */
+.block-container {
+    margin-bottom: 50px;
+    scroll-margin-top: 20px; /* 滚动留白，防止紧贴顶部 */
+}
+
+.block-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.block-title {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.type-badge {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: normal;
+}
+
+.badge-novel { background: var(--tag-novel); }
+.badge-comic { background: var(--tag-comic); }
+.badge-setting { background: var(--tag-setting); }
+
+.block-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* 11章 网格排版 */
+.chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.chapter-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 16px 18px;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.25s ease;
+}
+
+.chapter-card:hover {
+    border-color: var(--border-hover);
+    transform: translateX(4px);
+    background: #fff;
+}
+
+.chapter-card.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.chapter-card.disabled:hover {
+    transform: none;
+    border-color: var(--border-color);
+}
+
+.chapter-num {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: var(--accent-color);
+}
+
+.chapter-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.status-tag {
+    font-size: 11px;
+    color: #888;
+    border: 1px solid #ddd;
+    padding: 1px 6px;
+}
+
+footer {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    border-top: 1px solid var(--border-color);
+    max-width: 1000px;
+    margin: 40px auto 0;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .work-header {
+        grid-template-columns: 1fr;
+    }
+    .work-cover-placeholder {
+        aspect-ratio: 16 / 9;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html" class="back-link">← 返回主页 Back to Archive</a>
+    <div>
+        <a href="index.html">Merlyn Archive</a>
+    </div>
+</nav>
+
+<!-- 作品主信息区 -->
+<header class="work-header">
+    <div class="work-cover-placeholder">
+        <div class="title-en">The Nightwatch<br>of Wodeland</div>
+        <div style="font-size: 12px; margin-top: 10px; opacity: 0.8;">Integrated Archive</div>
+    </div>
+
+    <div class="work-info">
+        <h1>沃德兰的守夜人</h1>
+        <div class="subtitle-en">The Nightwatch of Wodeland</div>
+        
+        <div class="tags">
+            <span class="tag">奇幻 / 魔法</span>
+            <span class="tag">架空世界</span>
+            <span class="tag">正篇 + 3部前传</span>
+        </div>
+
+        <p class="synopsis">
+            一部关于新大陆、魔法与时代变迁的长篇幻想系列作品。<br>
+            包含主线正篇漫画，以及三部从不同人物的视角展开的前传（小说与漫画）。
+        </p>
+    </div>
+</header>
+
+<!-- 内容板块架构 -->
+<section class="content-sections">
+
+    <!-- 板块跳转标签页 -->
+    <div class="section-tabs">
+        <a href="#main-comic" class="tab-btn">正篇漫画</a>
+        <a href="#prequel-01" class="tab-btn">前传 01</a>
+        <a href="#prequel-02" class="tab-btn">前传 02</a>
+        <a href="#prequel-03" class="tab-btn">前传 03</a>
+        <a href="#setting-archive" class="tab-btn">设定集</a>
+    </div>
+
+    <!-- 1. 正篇漫画板块 -->
+    <div class="block-container" id="main-comic">
+        <div class="block-header">
+            <div class="block-title">正篇：沃德兰的守夜人</div>
+            <span class="type-badge badge-comic">漫画 Comic</span>
+        </div>
+        <div class="block-desc">主线故事</div>
+        
+        <div class="chapter-grid">
+            <a href="comic_ch01.html" class="chapter-card">
+                <div>
+                    <div class="chapter-num">CHAPTER 01</div>
+                    <div class="chapter-title">第一话：（筹备中）</div>
+                </div>
+                <span class="status-tag">In Progress</span>
+            </a>
+            <div class="chapter-card disabled">
+                <div>
+                    <div class="chapter-num">CHAPTER 02</div>
+                    <div class="chapter-title">第二话：（筹备中）</div>
+                </div>
+                <span class="status-tag">In Progress</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 前传 01（小说 - 11章）板块 -->
+    <div class="block-container" id="prequel-01">
+        <div class="block-header">
+            <div class="block-title">前传 01</div>
+            <span class="type-badge badge-novel">小说 Novel · 11 章全</span>
+        </div>
+        <div class="block-desc">这是关于一个人的毁灭与生存的故事。</div>
+
+        <div class="chapter-grid">
+            <a href="works/wodeland/prequel01/ch01.html" class="chapter-card"><div><div class="chapter-num">CH.01</div><div class="chapter-title">第一章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch02.html" class="chapter-card"><div><div class="chapter-num">CH.02</div><div class="chapter-title">第二章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch03.html" class="chapter-card"><div><div class="chapter-num">CH.03</div><div class="chapter-title">第三章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch04.html" class="chapter-card"><div><div class="chapter-num">CH.04</div><div class="chapter-title">第四章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch05.html" class="chapter-card"><div><div class="chapter-num">CH.05</div><div class="chapter-title">第五章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch06.html" class="chapter-card"><div><div class="chapter-num">CH.06</div><div class="chapter-title">第六章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch07.html" class="chapter-card"><div><div class="chapter-num">CH.07</div><div class="chapter-title">第七章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch08.html" class="chapter-card"><div><div class="chapter-num">CH.08</div><div class="chapter-title">第八章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch09.html" class="chapter-card"><div><div class="chapter-num">CH.09</div><div class="chapter-title">第九章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch10.html" class="chapter-card"><div><div class="chapter-num">CH.10</div><div class="chapter-title">第十章</div></div><div class="arrow">→</div></a>
+            <a href="works/wodeland/prequel01/ch11.html" class="chapter-card"><div><div class="chapter-num">CH.11</div><div class="chapter-title">第十一章</div></div><div class="arrow">→</div></a>
+        </div>
+    </div>
+
+    <!-- 3. 前传 02（漫画）板块 -->
+    <div class="block-container" id="prequel-02">
+        <div class="block-header">
+            <div class="block-title">前传 02：歧路</div>
+            <span class="type-badge badge-comic">漫画 Comic</span>
+        </div>
+        <div class="block-desc">精英护卫路易莎受到派遣，护送红衣主教之女穿越边境的一段奇幻冒险。</div>
+
+            <div class="chapter-grid">
+
+        <a class="chapter-card" 
+           href="reader/comic_rtl.html?work=wodeland&chapter=prequel02">
+
+            <div>
+                <div class="chapter-num">
+                    PREQUEL 02
+                </div>
+
+                <div class="chapter-title">
+                    全一话：歧路
+                </div>
+            </div>
+
+            <span class="status-tag">
+                Drafting
+            </span>
+
+        </a>
+
+    </div>
+    </div>
+
+    <!-- 4. 前传 03（小说）板块 -->
+    <div class="block-container" id="prequel-03">
+        <div class="block-header">
+            <div class="block-title">前传 03</div>
+            <span class="type-badge badge-novel">小说 Novel</span>
+        </div>
+        <div class="block-desc">围绕帝国军事学院展开的故事。</div>
+
+        <div class="chapter-grid">
+            <div class="chapter-card disabled">
+                <div>
+                    <div class="chapter-num">PREQUEL 03</div>
+                    <div class="chapter-title">第一章</div>
+                </div>
+                <div class="arrow">→</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 5. 设定集（Setting Archives）板块 -->
+    <div class="block-container" id="setting-archive">
+        <div class="block-header">
+            <div class="block-title">设定集与世界观</div>
+            <span class="type-badge badge-setting">设定 Archive</span>
+        </div>
+        <div class="block-desc">米斯特尔大陆的历史、地理、角色档案与魔法法则。</div>
+
+        <div class="chapter-grid">
+            <!-- 设定卡片示例 1：已发布/可点击 -->
+            <a href="works/wodeland/setting/worldview.html" class="chapter-card">
+                <div>
+                    <div class="chapter-num">WORLDVIEW</div>
+                    <div class="chapter-title">世界观与地理大纲</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <!-- 设定卡片示例 2：已发布/可点击 -->
+            <a href="works/wodeland/setting/characters.html" class="chapter-card">
+                <div>
+                    <div class="chapter-num">CHARACTERS</div>
+                    <div class="chapter-title">主要角色档案</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <!-- 设定卡片示例 3：筹备中/不可点击 -->
+            <div class="chapter-card disabled">
+                <div>
+                    <div class="chapter-num">MAGIC SYSTEM</div>
+                    <div class="chapter-title">魔法与法则体系</div>
+                </div>
+                <span class="status-tag">Updating</span>
+            </div>
+
+            <!-- 设定卡片示例 4：筹备中/不可点击 -->
+            <div class="chapter-card disabled">
+                <div>
+                    <div class="chapter-num">TIMELINE</div>
+                    <div class="chapter-title">年表与重大历史事件</div>
+                </div>
+                <span class="status-tag">Drafting</span>
+            </div>
+        </div>
+    </div>
+
+    
+</section>
+
+<footer>
+    © Merlyn Archive. The Nightwatch of Wodeland. All rights reserved.
+</footer>
+
+</body>
+</html>
