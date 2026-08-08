@@ -1,0 +1,226 @@
+:root{
+
+--background:#111214;
+--surface:#181a1d;
+--text:#e5e5e5;
+--muted:#888;
+--border:#333;
+
+}
+
+
+*{
+
+box-sizing:border-box;
+
+}
+
+
+
+body{
+
+margin:0;
+
+background:var(--background);
+
+color:var(--text);
+
+font-family:
+"Noto Sans SC",
+Arial,
+sans-serif;
+
+}
+
+
+
+/* 顶部 */
+
+.reader-header{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+right:0;
+
+height:80px;
+
+background:
+rgba(17,18,20,.95);
+
+border-bottom:1px solid var(--border);
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:15px 40px;
+
+z-index:10;
+
+}
+
+
+
+#archive-label{
+
+font-family:
+"Space Mono",
+monospace;
+
+font-size:11px;
+
+letter-spacing:3px;
+
+color:var(--muted);
+
+}
+
+
+
+h1{
+
+font-size:22px;
+
+margin:5px 0;
+
+}
+
+
+
+#chapter-title{
+
+margin:0;
+
+color:var(--muted);
+
+}
+
+
+
+.controls button{
+
+background:none;
+
+color:var(--text);
+
+border:1px solid var(--border);
+
+padding:8px 16px;
+
+margin-left:10px;
+
+cursor:pointer;
+
+}
+
+
+
+.controls button:hover{
+
+background:var(--surface);
+
+}
+
+
+
+/* 漫画区域 */
+
+
+#comic-container{
+
+padding-top:100px;
+
+text-align:center;
+
+}
+
+
+
+#comic-container img{
+
+display:block;
+
+max-width:100%;
+
+height:auto;
+
+margin:0 auto 20px;
+
+}
+
+
+
+/* 单页模式 */
+
+
+.single-page{
+
+height:calc(100vh - 100px);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+
+
+.single-page img{
+
+max-height:85vh;
+
+max-width:90vw;
+
+}
+
+
+
+/* RTL */
+
+.rtl{
+
+direction:rtl;
+
+}
+
+
+
+/* 手机 */
+
+
+@media(max-width:700px){
+
+
+.reader-header{
+
+height:70px;
+
+padding:10px 15px;
+
+}
+
+
+h1{
+
+font-size:16px;
+
+}
+
+
+
+.controls button{
+
+padding:6px 8px;
+
+}
+
+
+}
