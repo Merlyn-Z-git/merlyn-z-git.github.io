@@ -330,9 +330,20 @@ h1 {
   padding-top: 70px;
   height: 100vh;
   overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  
+  /* 关键修复：单页模式不需要 Flex RTL 侧向排布 */
+  direction: ltr !important; 
+}
+
+/* #comic-container.single-mode {
+  padding-top: 70px;
+  height: 100vh;
+  overflow: hidden;
   user-select: none; /* 禁止选中文本/拖拽图片 */
   cursor: pointer;
-}
+} */
 
 #comic-container.single-mode img {
   max-height: calc(100vh - 90px);
