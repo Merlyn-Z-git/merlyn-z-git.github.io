@@ -166,8 +166,8 @@ document.createElement("img");
 
 let filename =
 String(number)
-.padStart(3,"0")
-+".webp";
+.padStart(2,"0")
++".png";
 
 
 
