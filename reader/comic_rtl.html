@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
@@ -58,6 +58,43 @@
 <script src="comic.js"></script>
 
 
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comic Reader | Merlyn Archive</title>
+  <link rel="stylesheet" href="comic.css">
+</head>
+
+<body>
+
+  <header class="reader-header">
+    <div>
+      <div id="archive-label">ARCHIVE / COMIC</div>
+      <h1 id="comic-title">Loading...</h1>
+      <p id="chapter-title"></p>
+    </div>
+
+    <div class="controls">
+      <!-- 初始 JavaScript 中 singleMode = false，即默认长条模式，按钮提示应为“切换单页” -->
+      <button id="toggle-mode" type="button">单页模式</button>
+      <button id="fullscreen" type="button">全屏</button>
+    </div>
+  </header>
+
+  <!-- 给 comic-container 直接加 dir="rtl"，保障原生 RTL 布局支持 -->
+  <main id="comic-container" dir="rtl">
+    <!-- JS 动态载入图片 -->
+  </main>
+
+  <script src="comic.js"></script>
 </body>
 
 </html>
