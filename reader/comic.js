@@ -410,7 +410,7 @@ function renderSingle() {
 
 function createImage(number) {
   let img = document.createElement("img");
-  let filename = String(number).padStart(2, "0") + ".png";
+  let filename = String(number).padStart(3, "0") + ".png";
   img.src = `../works/${work}/${chapter}/${comicData.path}${filename}`;
   img.loading = "lazy";
   img.alt = `Page ${number}`;
@@ -438,12 +438,12 @@ function previousPage() {
 function preloadImages() {
   if (currentPage < comicData.pages) {
     const nextImg = new Image();
-    const nextFilename = String(currentPage + 1).padStart(2, "0") + ".png";
+    const nextFilename = String(currentPage + 1).padStart(3, "0") + ".png";
     nextImg.src = `../works/${work}/${chapter}/${comicData.path}${nextFilename}`;
   }
   if (currentPage > 1) {
     const prevImg = new Image();
-    const prevFilename = String(currentPage - 1).padStart(2, "0") + ".png";
+    const prevFilename = String(currentPage - 1).padStart(3, "0") + ".png";
     prevImg.src = `../works/${work}/${chapter}/${comicData.path}${prevFilename}`;
   }
 }
