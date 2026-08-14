@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comic Reader | Merlyn Archive</title>
+  <link rel="stylesheet" href="comic_ltr.css">
+</head>
+
+<body>
+
+  <header class="reader-header">
+    <div class="header-info">
+      <div id="archive-label">ARCHIVE / COMIC</div>
+      <h1 id="comic-title">Loading...</h1>
+      <p id="chapter-title"></p>
+    </div>
+
+    <!-- LTR 阅读提示徽章 -->
+    <div id="ltr-badge" class="ltr-badge">
+      <span class="badge-icon">▶</span> 从左往右阅读 (LTR)
+    </div>
+
+    <div class="controls">
+      <!-- 页码选择器 -->
+      <div class="page-selector">
+        <select id="page-select" aria-label="选择页码">
+          <!-- JS 动态填充选项 -->
+        </select>
+        <span id="total-pages">/ 0</span>
+      </div>
+
+      <button id="fullscreen" type="button">全屏</button>
+    </div>
+  </header>
+
+  <!-- 首次进入阅读器时的引导遮罩提示 -->
+  <div id="ltr-toast" class="ltr-toast">
+    <div class="toast-content">
+      <div class="toast-arrows">
+        <span class="arrow-prev">◀ 点击左侧 / 左箭头：上一页</span>
+        <span class="arrow-next">点击右侧 / 右箭头：下一页 ▶</span>
+      </div>
+      <p>习惯：从左向右阅读</p>
+    </div>
+  </div>
+
+  <main id="comic-container">
+    <!-- JS 动态载入当前页图片 -->
+  </main>
+
+  <script src="comic_ltr.js"></script>
+</body>
+
+</html>
