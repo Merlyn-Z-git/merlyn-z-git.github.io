@@ -1,0 +1,20 @@
+{
+    "title":{
+        "zh":"空值论",
+        "en":"Generation: NULL"
+    },
+
+    "chapter":{
+        "zh":"SYS_01",
+        "en":"INITIALIZATION"
+    },
+
+
+    "direction":"ltr",
+
+
+    "pages":7,
+
+
+    "path":"pages/"
+}
