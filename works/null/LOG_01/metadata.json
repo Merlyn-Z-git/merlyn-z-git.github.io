@@ -1,0 +1,20 @@
+{
+    "title":{
+        "zh":"空值论",
+        "en":"Generation: NULL"
+    },
+
+    "chapter":{
+        "zh":"LOG_01",
+        "en":"DAILY"
+    },
+
+
+    "direction":"ltr",
+
+
+    "pages":10,
+
+
+    "path":"pages/"
+}
