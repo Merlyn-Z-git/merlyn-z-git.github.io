@@ -22,8 +22,12 @@ a{color:var(--accent)}
 .tools button{font:inherit;font-size:14px;min-width:38px;height:34px;padding:0 10px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
 .tools button:hover{border-color:var(--accent);color:var(--accent)}
 main{max-width:760px;margin:0 auto;padding:0 24px 80px}
-h1.page{font-size:clamp(28px,6vw,40px);letter-spacing:.12em;margin:32px 0 8px;font-weight:600}
+h1.page{font-size:clamp(28px,6vw,40px);letter-spacing:.12em;margin:12px 0 8px;font-weight:600}
 .lead{color:var(--muted);margin:0 0 28px;line-height:1.8}
+.crumb{font-size:14px;color:var(--muted);margin:28px 0 0}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb a:hover{color:var(--accent)}
+.count{float:right;font-size:14px;color:var(--muted);font-weight:400}
 .tabs{display:flex;gap:6px;margin-bottom:24px;border-bottom:1px solid var(--line)}
 .tabs button{font:inherit;background:none;border:0;border-bottom:2px solid transparent;padding:8px 14px;color:var(--muted);cursor:pointer}
 .tabs button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
@@ -53,7 +57,7 @@ article .meta{color:var(--muted);font-size:14px;margin-bottom:36px;padding-botto
 <body>
 <div id="bar"></div>
 <div class="top">
-  <a href="../index.html">← Merlyn Archive</a>
+  <a href="../shortworks.html">← Short Works</a>
   <div class="tools" role="group" aria-label="阅读设置">
     <button id="fs-" aria-label="减小字号">A−</button>
     <button id="fs+" aria-label="增大字号">A+</button>
@@ -114,44 +118,29 @@ article .meta{color:var(--muted);font-size:14px;margin-bottom:36px;padding-botto
   function fail(msg){ app.innerHTML = '<p class="state">'+msg+'</p>'; }
   function params(){ return new URLSearchParams(location.search); }
 
-  /* 目录页 */
-  function showList(list){
-    document.title = "文字阅读 | Merlyn Archive";
-    var cats = ["全部"]; list.forEach(function(x){ if(x.category && cats.indexOf(x.category)<0) cats.push(x.category) });
-    var cur = "全部";
-    app.innerHTML = '<h1 class="page">文字</h1><p class="lead">小说与杂文。按发布时间倒序排列。</p><div class="tabs" role="tablist"></div><div id="list"></div>';
-    var tabs = app.querySelector(".tabs"), box = document.getElementById("list");
-    function draw(){
-      tabs.innerHTML = "";
-      cats.forEach(function(c){
-        var b = document.createElement("button");
-        b.textContent = c; b.setAttribute("role","tab"); b.setAttribute("aria-selected", c===cur);
-        b.onclick = function(){cur=c;draw()}; tabs.appendChild(b);
-      });
-      var items = list.filter(function(x){return cur==="全部"||x.category===cur});
-      box.innerHTML = items.length ? items.map(function(x){
-        return '<a class="item" href="?id='+encodeURIComponent(x.id)+'"><h2>'+esc(x.title)+'</h2><div class="meta">'+esc(x.category||"")+(x.date?"　"+esc(x.date):"")+'</div>'+(x.summary?'<p>'+esc(x.summary)+'</p>':"")+'</a>';
-      }).join("") : '<p class="state">这个分类下还没有文章。</p>';
-    }
-    draw();
-  }
+  /* 分类展示由 shortworks.html 负责（分类名称与顺序在那里设置） */
+  function kindOf(x){ return x.kind || x.category || "未分类"; }
 
   /* 阅读页 */
   function showText(list, id){
-    var i = list.findIndex(function(x){return x.id===id});
-    if(i<0) return fail('找不到这篇文章。<a href="text.html">回到目录</a>');
-    var x = list[i];
+    var x = list.filter(function(a){return a.id===id})[0];
+    if(!x) return fail('找不到这篇文章。<a href="../shortworks.html">返回 Short Works</a>');
+    var kind = kindOf(x);
+    var sib = list.filter(function(a){return kindOf(a)===kind});   // 同分类内，时间倒序
+    var i = sib.indexOf(x);
     document.title = x.title + " | Merlyn Archive";
     fetch(TEXT_DIR + x.file).then(function(r){
       if(!r.ok) throw new Error(r.status);
       return r.text();
     }).then(function(md){
-      var newer = list[i-1], older = list[i+1];  // 列表按时间倒序
-      app.innerHTML = '<article><h1>'+esc(x.title)+'</h1><div class="meta">'+esc(x.category||"")+(x.date?"　"+esc(x.date):"")+'</div><div class="body">'+render(md)+'</div></article>'
+      var newer = sib[i-1], older = sib[i+1];
+      var meta = [x.date, x.origin ? "原作：" + x.origin : ""].filter(Boolean).map(esc).join("　");
+      app.innerHTML = '<p class="crumb"><a href="../shortworks.html">Short Works</a> / <a href="../shortworks.html#k-'+encodeURIComponent(kind)+'">'+esc(kind)+'</a></p>'
+        + '<article><h1>'+esc(x.title)+'</h1><div class="meta">'+meta+'</div><div class="body">'+render(md)+'</div></article>'
         + '<nav class="pager" aria-label="上下篇">'
         + (older?'<a href="?id='+encodeURIComponent(older.id)+'"><small>← 上一篇</small>'+esc(older.title)+'</a>':'<span></span>')
         + (newer?'<a class="next" href="?id='+encodeURIComponent(newer.id)+'"><small>下一篇 →</small>'+esc(newer.title)+'</a>':'')
-        + '</nav><p style="margin-top:32px"><a href="text.html">返回目录</a></p>';
+        + '</nav><p style="margin-top:32px"><a href="../shortworks.html#k-'+encodeURIComponent(kind)+'">返回「'+esc(kind)+'」</a></p>';
       var saved = parseFloat(store.get("txt_pos_"+id));
       if(saved>0.02 && saved<0.98){
         requestAnimationFrame(function(){ window.scrollTo(0, saved*(document.documentElement.scrollHeight-innerHeight)); });
@@ -172,8 +161,8 @@ article .meta{color:var(--muted);font-size:14px;margin-bottom:36px;padding-botto
     return r.json();
   }).then(function(list){
     list.sort(function(a,b){return (b.date||"").localeCompare(a.date||"")});
-    var id = params().get("id");
-    id ? showText(list,id) : showList(list);
+    var q = params(), id = q.get("id"), kind = q.get("kind");
+    if(id) showText(list,id); else location.replace("../shortworks.html" + (kind ? "#k-" + encodeURIComponent(kind) : ""));
   }).catch(function(e){
     fail('目录加载失败（'+esc(String(e.message))+'）。如果是在本地直接双击打开的页面，浏览器会拦截读取文件，请用本地服务器预览，或直接推送到 GitHub 后访问。');
   });
