@@ -83,23 +83,22 @@ nav a:hover {
 }
 
 .work-cover-placeholder {
+    position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4;
+    max-width: 260px;
+    aspect-ratio: 1980 / 2861;   /* 与封面图一致，不裁切 */
     background: #eae6dc;
     border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--accent-color);
-    text-align: center;
-    padding: 20px;
+    overflow: hidden;
 }
 
-.work-cover-placeholder .title-en {
-    font-family: 'Cinzel', serif;
-    font-size: 18px;
-    margin-bottom: 8px;
+.work-cover-placeholder img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .work-info h1 {
@@ -283,8 +282,8 @@ footer {
         grid-template-columns: 1fr;
     }
     .work-cover-placeholder {
-        aspect-ratio: 16 / 9;
-    }
+    max-width: 260px;
+}
 }
 </style>
 </head>
@@ -301,9 +300,8 @@ footer {
 <!-- 作品主信息区 -->
 <header class="work-header">
     <div class="work-cover-placeholder">
-        <div class="title-en">The Nightwatch<br>of Wodeland</div>
-        <div style="font-size: 12px; margin-top: 10px; opacity: 0.8;">Integrated Archive</div>
-    </div>
+    <img src="works/wodeland/cover/260820_24.png" alt="《沃德兰的守夜人》封面" decoding="async">
+</div>
 
     <div class="work-info">
         <h1>沃德兰的守夜人</h1>
