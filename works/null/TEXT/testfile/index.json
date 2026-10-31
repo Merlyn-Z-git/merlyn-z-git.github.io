@@ -1,10 +1,10 @@
 [
   {
     "id": "sample-essay",
-    "title": "示例杂文：关于观察者",
+    "title": "示例杂文",
     "category": "杂文",
     "date": "2026-10-31",
-    "summary": "这是一篇用来测试阅读器的示例文章，可以直接删除。",
+    "summary": "这是一篇用来测试阅读器的示例文章",
     "file": "sample-essay.md"
   },
   {
