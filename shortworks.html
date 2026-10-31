@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Short Works 短篇作品 | Merlyn Archive</title>
+<meta name="description" content="短篇小说、同人、杂文与实验性作品">
+<style>
+:root{--bg:#f5f3ee;--card:#faf9f6;--text:#222;--muted:#6b665d;--line:#cfc9bb;--accent:#8b6f47}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","Times New Roman",serif}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 24px;max-width:1000px;margin:0 auto;padding:24px 40px}
+.top a{text-decoration:none;color:var(--muted);font-size:15px}
+.top a:hover{color:var(--accent)}
+.top nav{display:flex;flex-wrap:wrap;gap:6px 22px}
+main{max-width:1000px;margin:0 auto;padding:0 40px 80px}
+h1{font-size:clamp(30px,6vw,46px);letter-spacing:.1em;font-weight:600;margin:40px 0 6px}
+.en{color:var(--muted);font-style:italic;margin:0 0 20px}
+.lead{max-width:36em;line-height:1.9;color:var(--muted);margin:0 0 32px}
+.jump{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 48px}
+.jump a{border:1px solid var(--line);padding:6px 16px;text-decoration:none;font-size:15px;background:var(--card)}
+.jump a:hover{border-color:var(--accent);color:var(--accent)}
+.kind{margin:0 0 56px;scroll-margin-top:24px}
+.kind h2{font-size:28px;font-weight:600;margin:0 0 6px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.kind h2 small{font-size:14px;font-weight:400;color:var(--muted);margin-left:12px}
+.kind .desc{color:var(--muted);margin:14px 0 22px;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
+.work{display:flex;flex-direction:column;border:1px solid var(--line);background:var(--card);padding:22px 24px;text-decoration:none;transition:border-color .2s}
+.work:hover{border-color:var(--accent)}
+.work:hover h3{color:var(--accent)}
+.work h3{margin:0 0 8px;font-size:21px;font-weight:600;line-height:1.5}
+.work .meta{font-size:13px;color:var(--muted);margin-bottom:10px}
+.work p{margin:0;line-height:1.8;color:var(--muted);font-size:15px}
+.state{color:var(--muted);line-height:1.9}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:40px 20px;border-top:1px solid var(--line);max-width:1000px;margin:0 auto}
+@media(max-width:600px){.top,main{padding-left:18px;padding-right:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.work{transition:none}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="index.html">← Merlyn Archive</a>
+  <nav>
+    <a href="works.html">Works 作品</a>
+    <a href="gallery.html">Gallery 插画</a>
+    <a href="journal.html">Journal 日志</a>
+    <a href="about.html">About 关于</a>
+  </nav>
+</div>
+<main>
+  <h1>短篇作品</h1>
+  <p class="en">Short Works</p>
+  <p class="lead">短篇小说、同人、杂文以及实验性作品。按作品性质分类，选择一篇开始阅读。</p>
+  <div class="jump" id="jump" aria-label="分类跳转"></div>
+  <div id="app"><p class="state">加载中…</p></div>
+</main>
+<footer>© Merlyn Archive · 虚构大法官的档案馆</footer>
+
+<script>
+(function(){
+  var INDEX_URL = "texts/index.json";
+  var READER = "reader/text.html";
+
+  /* 分类名称、顺序与说明。index.json 里每篇的 "kind" 要与这里的名字一致；
+     没写在这里的分类会自动排在最后。 */
+  var KINDS = [
+    ["原创小说","完全原创的故事与世界。"],
+    ["作品同人","基于既有作品的二次创作，每篇会标明原作。"],
+    ["杂文","随笔、评论与零散的思考。"],
+    ["实验作品","形式或体裁上的尝试。"]
+  ];
+
+  var app = document.getElementById("app"), jump = document.getElementById("jump");
+  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+  function kindOf(x){return x.kind || x.category || "未分类"}
+  function desc(k){for(var i=0;i<KINDS.length;i++) if(KINDS[i][0]===k) return KINDS[i][1]; return ""}
+  /* 作品链接：默认进入文字阅读器；如果某条写了 "link"（比如漫画短篇的阅读器地址），就用它 */
+  function href(x){return x.link ? x.link : READER + "?id=" + encodeURIComponent(x.id)}
+
+  fetch(INDEX_URL).then(function(r){
+    if(!r.ok) throw new Error(r.status);
+    return r.json();
+  }).then(function(list){
+    list.sort(function(a,b){return (b.date||"").localeCompare(a.date||"")});
+    var present = [];
+    list.forEach(function(x){var k=kindOf(x); if(present.indexOf(k)<0) present.push(k)});
+    var kinds = KINDS.map(function(k){return k[0]}).filter(function(k){return present.indexOf(k)>=0});
+    present.forEach(function(k){if(kinds.indexOf(k)<0) kinds.push(k)});
+
+    if(!kinds.length){ app.innerHTML = '<p class="state">还没有发布作品。</p>'; return; }
+
+    jump.innerHTML = kinds.map(function(k){return '<a href="#k-'+encodeURIComponent(k)+'">'+esc(k)+'</a>'}).join("");
+    app.innerHTML = kinds.map(function(k){
+      var items = list.filter(function(x){return kindOf(x)===k});
+      return '<section class="kind" id="k-'+esc(k)+'"><h2>'+esc(k)+'<small>'+items.length+' 篇</small></h2>'
+        + (desc(k)?'<p class="desc">'+esc(desc(k))+'</p>':'')
+        + '<div class="grid">' + items.map(function(x){
+            var meta = [x.date, x.origin ? "原作：" + x.origin : ""].filter(Boolean).map(esc).join("　");
+            return '<a class="work" href="'+esc(href(x))+'"><h3>'+esc(x.title)+'</h3>'+(meta?'<div class="meta">'+meta+'</div>':'')+(x.summary?'<p>'+esc(x.summary)+'</p>':'')+'</a>';
+          }).join("") + '</div></section>';
+    }).join("");
+
+    /* 从阅读器返回时，定位到对应分类（#k-分类名） */
+    var h = decodeURIComponent(location.hash.slice(1));
+    if(h){var el = document.getElementById(h); if(el) el.scrollIntoView();}
+  }).catch(function(e){
+    app.innerHTML = '<p class="state">作品目录加载失败（'+esc(e.message)+'）。请检查 texts/index.json 是否存在、格式是否正确。本地直接双击打开页面也会被浏览器拦截，推送到 GitHub 后访问即可。</p>';
+  });
+})();
+</script>
+</body>
+</html>
