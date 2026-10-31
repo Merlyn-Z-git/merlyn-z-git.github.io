@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文字阅读 | Merlyn Archive</title>
+<meta name="description" content="虚构大法官的小说与杂文。">
+<style>
+:root{--bg:#f5f3ee;--card:#faf9f6;--text:#222;--muted:#6b665d;--line:#d9d4c8;--accent:#8b6f47;--fs:18px}
+[data-theme="night"]{--bg:#17181a;--card:#1f2124;--text:#d6d3cc;--muted:#8d8a83;--line:#33363a;--accent:#c4a572}
+[data-theme="sepia"]{--bg:#efe3c8;--card:#f4ead3;--text:#3b2f20;--muted:#7a6a52;--line:#d8c8a6;--accent:#8b5a2b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","Times New Roman",serif;transition:background .25s,color .25s}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:20}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;max-width:760px;margin:0 auto;padding:20px 24px}
+.top a{text-decoration:none;color:var(--muted);font-size:15px}
+.top a:hover{color:var(--accent)}
+.tools{display:flex;gap:8px}
+.tools button{font:inherit;font-size:14px;min-width:38px;height:34px;padding:0 10px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.tools button:hover{border-color:var(--accent);color:var(--accent)}
+main{max-width:760px;margin:0 auto;padding:0 24px 80px}
+h1.page{font-size:clamp(28px,6vw,40px);letter-spacing:.12em;margin:32px 0 8px;font-weight:600}
+.lead{color:var(--muted);margin:0 0 28px;line-height:1.8}
+.tabs{display:flex;gap:6px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;background:none;border:0;border-bottom:2px solid transparent;padding:8px 14px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+.item{display:block;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
+.item:hover h2{color:var(--accent)}
+.item h2{margin:0 0 6px;font-size:22px;font-weight:600}
+.item .meta{font-size:14px;color:var(--muted)}
+.item p{margin:8px 0 0;line-height:1.8;color:var(--muted)}
+article h1{font-size:clamp(26px,5vw,36px);line-height:1.4;margin:24px 0 10px;font-weight:600}
+article .meta{color:var(--muted);font-size:14px;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.body{font-size:var(--fs);line-height:2;text-align:justify;overflow-wrap:anywhere}
+.body p{margin:0 0 .9em;text-indent:2em}
+.body h2,.body h3{text-indent:0;margin:2em 0 .8em;line-height:1.5}
+.body blockquote{margin:1.2em 0;padding:.2em 0 .2em 1.2em;border-left:3px solid var(--line);color:var(--muted)}
+.body blockquote p{text-indent:0;margin:0}
+.body hr{border:0;text-align:center;margin:2.4em 0;color:var(--muted)}
+.body hr::after{content:"＊　＊　＊";letter-spacing:.3em}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line)}
+.pager a{max-width:48%;text-decoration:none;line-height:1.6}
+.pager small{display:block;color:var(--muted)}
+.pager .next{text-align:right;margin-left:auto}
+.state{color:var(--muted);line-height:1.9;padding:24px 0}
+@media(max-width:600px){main,.top{padding-left:18px;padding-right:18px}.body{text-align:left}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body{transition:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="top">
+  <a href="../index.html">← Merlyn Archive</a>
+  <div class="tools" role="group" aria-label="阅读设置">
+    <button id="fs-" aria-label="减小字号">A−</button>
+    <button id="fs+" aria-label="增大字号">A+</button>
+    <button id="theme" aria-label="切换主题">纸</button>
+  </div>
+</div>
+<main id="app"><p class="state">加载中…</p></main>
+
+<script>
+(function(){
+  var INDEX_URL = "../texts/index.json";   // 文章目录
+  var TEXT_DIR  = "../texts/";             // 正文文件夹
+  var app = document.getElementById("app");
+  var bar = document.getElementById("bar");
+  var themes = ["paper","night","sepia"], names = {paper:"纸",night:"夜",sepia:"黄"};
+  var store = {
+    get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  };
+
+  /* 主题与字号 */
+  var theme = store.get("txt_theme") || "paper";
+  var fs = parseInt(store.get("txt_fs"),10) || 18;
+  function applyPrefs(){
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.style.setProperty("--fs", fs+"px");
+    document.getElementById("theme").textContent = names[theme];
+  }
+  document.getElementById("theme").onclick = function(){
+    theme = themes[(themes.indexOf(theme)+1)%themes.length]; store.set("txt_theme",theme); applyPrefs();
+  };
+  document.getElementById("fs-").onclick = function(){fs=Math.max(14,fs-1);store.set("txt_fs",fs);applyPrefs()};
+  document.getElementById("fs+").onclick = function(){fs=Math.min(28,fs+1);store.set("txt_fs",fs);applyPrefs()};
+  applyPrefs();
+
+  /* 极简 Markdown：每行一段；# ## ### 标题；> 引用；--- 分隔；**粗体** *斜体* [文字](链接) */
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+  function inline(s){
+    s = esc(s);
+    s = s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    return s;
+  }
+  function render(md){
+    var out = [];
+    md.replace(/\r/g,"").split("\n").forEach(function(line){
+      var t = line.trim();
+      if(!t) return;
+      if(/^(-{3,}|\*{3,})$/.test(t)) out.push("<hr>");
+      else if(/^###\s+/.test(t)) out.push("<h3>"+inline(t.replace(/^###\s+/,""))+"</h3>");
+      else if(/^##?\s+/.test(t)) out.push("<h2>"+inline(t.replace(/^##?\s+/,""))+"</h2>");
+      else if(/^>\s?/.test(t)) out.push("<blockquote><p>"+inline(t.replace(/^>\s?/,""))+"</p></blockquote>");
+      else out.push("<p>"+inline(t)+"</p>");
+    });
+    return out.join("\n");
+  }
+
+  function fail(msg){ app.innerHTML = '<p class="state">'+msg+'</p>'; }
+  function params(){ return new URLSearchParams(location.search); }
+
+  /* 目录页 */
+  function showList(list){
+    document.title = "文字阅读 | Merlyn Archive";
+    var cats = ["全部"]; list.forEach(function(x){ if(x.category && cats.indexOf(x.category)<0) cats.push(x.category) });
+    var cur = "全部";
+    app.innerHTML = '<h1 class="page">文字</h1><p class="lead">小说与杂文。按发布时间倒序排列。</p><div class="tabs" role="tablist"></div><div id="list"></div>';
+    var tabs = app.querySelector(".tabs"), box = document.getElementById("list");
+    function draw(){
+      tabs.innerHTML = "";
+      cats.forEach(function(c){
+        var b = document.createElement("button");
+        b.textContent = c; b.setAttribute("role","tab"); b.setAttribute("aria-selected", c===cur);
+        b.onclick = function(){cur=c;draw()}; tabs.appendChild(b);
+      });
+      var items = list.filter(function(x){return cur==="全部"||x.category===cur});
+      box.innerHTML = items.length ? items.map(function(x){
+        return '<a class="item" href="?id='+encodeURIComponent(x.id)+'"><h2>'+esc(x.title)+'</h2><div class="meta">'+esc(x.category||"")+(x.date?"　"+esc(x.date):"")+'</div>'+(x.summary?'<p>'+esc(x.summary)+'</p>':"")+'</a>';
+      }).join("") : '<p class="state">这个分类下还没有文章。</p>';
+    }
+    draw();
+  }
+
+  /* 阅读页 */
+  function showText(list, id){
+    var i = list.findIndex(function(x){return x.id===id});
+    if(i<0) return fail('找不到这篇文章。<a href="text.html">回到目录</a>');
+    var x = list[i];
+    document.title = x.title + " | Merlyn Archive";
+    fetch(TEXT_DIR + x.file).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function(md){
+      var newer = list[i-1], older = list[i+1];  // 列表按时间倒序
+      app.innerHTML = '<article><h1>'+esc(x.title)+'</h1><div class="meta">'+esc(x.category||"")+(x.date?"　"+esc(x.date):"")+'</div><div class="body">'+render(md)+'</div></article>'
+        + '<nav class="pager" aria-label="上下篇">'
+        + (older?'<a href="?id='+encodeURIComponent(older.id)+'"><small>← 上一篇</small>'+esc(older.title)+'</a>':'<span></span>')
+        + (newer?'<a class="next" href="?id='+encodeURIComponent(newer.id)+'"><small>下一篇 →</small>'+esc(newer.title)+'</a>':'')
+        + '</nav><p style="margin-top:32px"><a href="text.html">返回目录</a></p>';
+      var saved = parseFloat(store.get("txt_pos_"+id));
+      if(saved>0.02 && saved<0.98){
+        requestAnimationFrame(function(){ window.scrollTo(0, saved*(document.documentElement.scrollHeight-innerHeight)); });
+      }
+    }).catch(function(e){
+      fail('正文加载失败（'+esc(String(e.message))+'）。请检查 texts/index.json 里的 file 路径和大小写是否与仓库一致。');
+    });
+    window.addEventListener("scroll", function(){
+      var max = document.documentElement.scrollHeight - innerHeight;
+      var p = max>0 ? scrollY/max : 0;
+      bar.style.width = (p*100)+"%";
+      store.set("txt_pos_"+id, p.toFixed(4));
+    }, {passive:true});
+  }
+
+  fetch(INDEX_URL).then(function(r){
+    if(!r.ok) throw new Error(r.status);
+    return r.json();
+  }).then(function(list){
+    list.sort(function(a,b){return (b.date||"").localeCompare(a.date||"")});
+    var id = params().get("id");
+    id ? showText(list,id) : showList(list);
+  }).catch(function(e){
+    fail('目录加载失败（'+esc(String(e.message))+'）。如果是在本地直接双击打开的页面，浏览器会拦截读取文件，请用本地服务器预览，或直接推送到 GitHub 后访问。');
+  });
+})();
+</script>
+</body>
+</html>
